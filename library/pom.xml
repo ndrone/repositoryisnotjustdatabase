@@ -21,6 +21,7 @@
     <modules>
         <module>contact-core</module>
         <module>contact-jdbc</module>
+        <module>contact-file</module>
     </modules>
 
 </project>

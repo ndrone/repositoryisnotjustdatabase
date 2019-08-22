@@ -10,6 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <groupId>org.example</groupId>
     <artifactId>contact-jdbc</artifactId>
     <packaging>jar</packaging>
 
