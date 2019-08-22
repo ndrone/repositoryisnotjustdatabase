@@ -3,20 +3,6 @@ package org.example;
 public interface ContactRepository {
 
 	/**
-	 * Saves a new or updated contact information. If a <code>contact</code> is passed with the
-	 * <code>id</code> is <code>null</code>. The contact will be treated as a new contact, and
-	 * an <code>id</code> will be generated for it. If an <code>contact</code> has an existing
-	 * <code>id</code> the <code>contact</code> with be updated.
-	 *
-	 * @param contact to be saved or updated
-	 * @return saved <code>contact</code>
-	 * @throws IllegalArgumentException if a <code>contact</code> with an existing <code>id</code>
-	 *                                  can not be found.
-	 * @throws ContactException         if an error has occurred
-	 */
-	Contact saveContact(Contact contact) throws IllegalArgumentException, ContactException;
-
-	/**
 	 * Search for the contact with the existing <code>id</code>
 	 *
 	 * @param id of the contact to be searched for
@@ -39,4 +25,18 @@ public interface ContactRepository {
 	 */
 	Iterable<Contact> findContacts(String firstName, String lastName)
 			throws IllegalArgumentException, ContactException;
+
+	/**
+	 * Saves a new or updated contact information. If a <code>contact</code> is passed with the
+	 * <code>id</code> is <code>null</code>. The contact will be treated as a new contact, and
+	 * an <code>id</code> will be generated for it. If an <code>contact</code> has an existing
+	 * <code>id</code> the <code>contact</code> with be updated.
+	 *
+	 * @param contact to be saved or updated
+	 * @return saved <code>contact</code>
+	 * @throws IllegalArgumentException if a <code>contact</code> with an existing <code>id</code>
+	 *                                  can not be found.
+	 * @throws ContactException         if an error has occurred
+	 */
+	Contact saveContact(Contact contact) throws IllegalArgumentException, ContactException;
 }
