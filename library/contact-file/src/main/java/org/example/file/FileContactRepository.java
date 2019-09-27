@@ -5,6 +5,7 @@ import com.opencsv.*;
 import org.example.Contact;
 import org.example.ContactException;
 import org.example.ContactRepository;
+import org.example.ContactRepositoryValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +45,7 @@ class FileContactRepository implements ContactRepository {
 
 	@Override
 	public Contact findContact(Integer id) {
-		if (null == id) {
-			throw new IllegalArgumentException("Id to search on must not be null");
-		}
+		ContactRepositoryValidator.notNull(id);
 
 		String stringId = String.valueOf(id);
 		String[] parts = readFile().stream().filter(line -> stringId.equals(line[ID_POSITION]))
@@ -55,7 +54,8 @@ class FileContactRepository implements ContactRepository {
 		if (null == parts) {
 			return null;
 		} else {
-			return new Contact(Integer.valueOf(parts[ID_POSITION]), parts[FIRST_NAME_POSITION], parts[LAST_NAME_POSITION]);
+			return new Contact(
+					Integer.valueOf(parts[ID_POSITION]), parts[FIRST_NAME_POSITION], parts[LAST_NAME_POSITION]);
 		}
 	}
 
@@ -72,9 +72,8 @@ class FileContactRepository implements ContactRepository {
 
 	@Override
 	public Iterable<Contact> findContacts(String firstName, String lastName) {
-		if (null == firstName && null == lastName) {
-			throw new IllegalArgumentException("firstName and lastName to search on must not be null");
-		}
+		ContactRepositoryValidator.firstNameOrLastNameHasText(firstName, lastName);
+
 		Predicate<String[]> predicate;
 		if (null == lastName) {
 			predicate = line -> firstName.equals(line[FIRST_NAME_POSITION]);
@@ -91,12 +90,9 @@ class FileContactRepository implements ContactRepository {
 
 	@Override
 	public Contact saveContact(Contact contact) {
-		Contact saved = null;
-		if (null == contact) {
-			throw new IllegalArgumentException("Contact must not be null");
-		} else if (null == contact.getFirstName() && null == contact.getLastName()) {
-			throw new IllegalArgumentException("Contact firstName and lastName must not be null");
-		} else if (null == contact.getId()) {
+		ContactRepositoryValidator.notNull(contact);
+		Contact saved;
+		if (null == contact.getId()) {
 			// find next id and save
 			String[] maxContactParts = readFile().stream()
 					.max(Comparator.comparing(line -> Integer.valueOf(line[ID_POSITION]))).orElse(new String[]{"0"});
