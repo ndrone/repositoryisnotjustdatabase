@@ -11,8 +11,7 @@
         <relativePath>../</relativePath>
     </parent>
 
-    <artifactId>contact-file</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>contact-core-test</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -26,27 +25,16 @@
             <artifactId>contact-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.28</version>
-        </dependency>
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>4.6</version>
-        </dependency>
 
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>contact-core-test</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.5.1</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

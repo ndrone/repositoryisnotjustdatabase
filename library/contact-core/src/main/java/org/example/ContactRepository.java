@@ -1,5 +1,12 @@
 package org.example;
 
+/**
+ * A simple ContactRepository. Any implementation of this interface should
+ * leverage {@link ContactRepositoryValidator} to validate the overriding methods
+ * arguments. The implementations Tests classes should extend ContactRepositoryTests
+ *
+ * @see contact-core-test module
+ */
 public interface ContactRepository {
 
 	/**

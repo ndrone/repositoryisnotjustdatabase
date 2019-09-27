@@ -52,12 +52,6 @@ class ContactRepositoryValidatorTests {
 		Assertions.assertNotNull(exception);
 	}
 
-	@ParameterizedTest
-	@MethodSource("provideFirstNameLastName")
-	void firstNameOrLastName(String firstName, String lastName) {
-		Assertions.assertDoesNotThrow(() -> ContactRepositoryValidator.firstNameOrLastNameHasText(firstName, lastName));
-	}
-
 	private static Stream<Arguments> provideFirstNameLastName() {
 		return Stream.of(
 				Arguments.of(null, "lastName"),
@@ -67,5 +61,11 @@ class ContactRepositoryValidatorTests {
 				Arguments.of("firstName", ""),
 				Arguments.of("firstName", " ")
 		);
+	}
+
+	@ParameterizedTest
+	@MethodSource("provideFirstNameLastName")
+	void firstNameOrLastName(String firstName, String lastName) {
+		Assertions.assertDoesNotThrow(() -> ContactRepositoryValidator.firstNameOrLastNameHasText(firstName, lastName));
 	}
 }

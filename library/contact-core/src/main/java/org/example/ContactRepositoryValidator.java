@@ -3,6 +3,9 @@ package org.example;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Validator that should be used in the implementations to validate arguments to the methods
+ */
 public final class ContactRepositoryValidator {
 
 	private ContactRepositoryValidator() {
@@ -23,7 +26,7 @@ public final class ContactRepositoryValidator {
 
 	public static void firstNameOrLastNameHasText(String firstName, String lastName) {
 		if (Stream.of(firstName, lastName)
-				.noneMatch(arg -> Objects.nonNull(arg) && !arg.isEmpty() && !arg.isBlank())) {
+				.noneMatch(arg -> Objects.nonNull(arg) && !arg.isBlank())) {
 			throw new IllegalArgumentException("Neither firstName or lastName have text");
 		}
 	}
