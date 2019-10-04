@@ -45,7 +45,8 @@ public class ContactRepositoryTests {
 		contact.setLastName("contact");
 
 		Contact saved = save(contact);
-		Assertions.assertEquals(contact.getId(), saved.getId(), "just updating contact id should be the same");
+		Assertions.assertEquals(contact.getId().intValue(), saved.getId().intValue(),
+				"just updating contact id should be the same");
 		Assertions.assertEquals("contact", saved.getLastName(), "validating last name changed.");
 	}
 

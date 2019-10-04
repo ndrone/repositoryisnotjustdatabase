@@ -2,11 +2,12 @@ package org.example.jdbc;
 
 import org.example.Contact;
 import org.example.ContactRepository;
+import org.example.ContactRepositoryValidator;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 class JdbcContactRepository implements ContactRepository {
 
@@ -18,33 +19,53 @@ class JdbcContactRepository implements ContactRepository {
 	}
 
 	@Override
-	public Contact saveContact(Contact contact) {
-		Assert.isTrue(StringUtils.hasText(contact.getFirstName()) || StringUtils.hasText(contact.getLastName()),
-				"Contact must have a first name or last name");
-
-		ContactEntity contactEntity = new ContactEntity(contact.getId(), contact.getFirstName(), contact.getLastName());
-		contactEntity = contactEntityRepository.save(contactEntity);
-		return new Contact(contactEntity.getId(), contactEntity.getFirstName(), contactEntity.getLastName());
-	}
-
-	@Override
 	public Contact findContact(Integer id) {
-		Assert.notNull(id, "Contact id must have a value");
+		ContactRepositoryValidator.notNull(id);
 
-		ContactEntity contactEntity = contactEntityRepository.findById(id).orElse(new ContactEntity());
-		return new Contact(contactEntity.getId(), contactEntity.getFirstName(), contactEntity.getLastName());
+		ContactEntity contactEntity = contactEntityRepository.findById(id).orElse(null);
+		if (contactEntity == null) {
+			return null;
+		} else {
+			return new Contact(contactEntity.getId(), contactEntity.getFirstName(), contactEntity.getLastName());
+		}
 	}
 
 	@Override
 	public Iterable<Contact> findContacts(String firstName, String lastName) {
-		Assert.isTrue(StringUtils.hasText(firstName) || StringUtils.hasText(lastName),
-				"Fist name or last name must have a value");
+		ContactRepositoryValidator.firstNameOrLastNameHasText(firstName, lastName);
 
+		Iterable<ContactEntity> contactEntities;
+		if (firstName != null && lastName != null) {
+			contactEntities = contactEntityRepository
+					.findAllByFirstNameAndLastName(firstName, lastName);
+		} else {
+			contactEntities = contactEntityRepository.findAllByFirstNameOrLastName(firstName, lastName);
+		}
 		List<Contact> contacts = new ArrayList<>();
-		Iterable<ContactEntity> contactEntities = contactEntityRepository
-				.findAllByFirstNameAndLastName(firstName, lastName);
-		contactEntities.forEach(contactEntity ->
-				contacts.add(new Contact(contactEntity.getId(), contactEntity.getFirstName(), contactEntity.getLastName())));
+		contactEntities.forEach(contactEntity -> contacts.add(
+				new Contact(contactEntity.getId(), contactEntity.getFirstName(), contactEntity.getLastName())));
 		return contacts;
+	}
+
+	@Override
+	public Contact saveContact(Contact contact) {
+		ContactRepositoryValidator.notNull(contact);
+
+		ContactEntity contactEntity;
+		if (contact.getId() == null) {
+			contactEntity =
+					new ContactEntity(contact.getId(), contact.getFirstName(), contact.getLastName());
+
+		} else {
+			if (Optional.ofNullable(findContact(contact.getId())).isPresent()) {
+				// update contact
+				contactEntity = new ContactEntity(contact.getId(), contact.getFirstName(), contact.getLastName());
+			} else {
+				throw new IllegalArgumentException(
+						String.format("Contact with id %s not found can't update", contact.getId()));
+			}
+		}
+		contactEntity = contactEntityRepository.save(contactEntity);
+		return new Contact(contactEntity.getId(), contactEntity.getFirstName(), contactEntity.getLastName());
 	}
 }
