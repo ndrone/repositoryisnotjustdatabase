@@ -23,6 +23,7 @@
         <module>contact-core</module>
         <module>contact-core-test</module>
         <module>contact-file</module>
+        <module>contact-http</module>
         <module>contact-jdbc</module>
     </modules>
 
