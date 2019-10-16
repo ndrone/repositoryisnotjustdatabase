@@ -63,7 +63,7 @@ class HttpContactRepositoryTests extends ContactRepositoryTests {
 		Assertions.assertNotNull(exception);
 	}
 
-	private static Stream<Arguments> provideStringsForIsBlank() {
+	private static Stream<Arguments> provideStringsForUriIsBlank() {
 		return Stream.of(
 				Arguments.of((String) null),
 				Arguments.of(""),
@@ -72,7 +72,7 @@ class HttpContactRepositoryTests extends ContactRepositoryTests {
 	}
 
 	@ParameterizedTest
-	@MethodSource("provideStringsForIsBlank")
+	@MethodSource("provideStringsForUriIsBlank")
 	void missingOrIsBlankUri(String uri) {
 		IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class,
 				() -> new HttpContactRepository(okHttpClient, objectMapper, uri));

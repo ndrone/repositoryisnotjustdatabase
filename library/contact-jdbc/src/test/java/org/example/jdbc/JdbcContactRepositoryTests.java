@@ -14,14 +14,13 @@ import java.util.stream.Collectors;
 
 class JdbcContactRepositoryTests extends ContactRepositoryTests {
 
-	private ContactEntityRepository contactEntityRepository;
-
 	private List<ContactEntity> savedEntities;
 
 	@BeforeEach
 	void init() {
 		savedEntities = new ArrayList<>();
-		contactEntityRepository = Mockito.mock(ContactEntityRepository.class);
+		ContactEntityRepository contactEntityRepository = Mockito
+				.mock(ContactEntityRepository.class);
 		contactRepository = new JdbcContactRepository(contactEntityRepository);
 
 		Mockito.when(contactEntityRepository.findById(Mockito.anyInt())).thenAnswer(invocationOnMock -> {
